@@ -1,0 +1,85 @@
+{
+  "name": "robot-vue-img",
+  "version": "1.0.0",
+  "description": "robot-vue-img",
+  "private": true,
+  "workspaces": [
+    "packages/vue-img"
+  ],
+  "scripts": {
+    "dev": "node scripts/doc.js && vite",
+    "doc:w": "npm run build:api && node scripts/doc.js -w",
+    "commit": "git add . && cz",
+    "clean": "rimraf packages/**/dist docs/_site docs/*.html",
+    "codesandbox": "node scripts/codesandbox/index.js",
+    "build": "npm run clean && rollup -c rollup.config.es.js && rollup -c rollup.config.cjs.js && node ./scripts/dts.js",
+    "build:api": "node scripts/api.js -d",
+    "build:doc": "node scripts/doc.js && vite build ./docs -c ./vite.config.ts && node scripts/api.js && node scripts/imgs.js",
+    "test": "BABEL_ENV=test jest --detectOpenHandles --forceExit --verbose --coverage",
+    "test:last": "BABEL_ENV=test jest --detectOpenHandles --forceExit --verbose --coverage --changedSince origin/main",
+    "test:clear": "BABEL_ENV=test jest --clearCache",
+    "test:debug": "BABEL_ENV=test node --inspect-brk node_modules/.bin/jest --runInBand packages/react-img/src/useImg.test.tsx",
+    "test:watch": "BABEL_ENV=test jest --watch --verbose --coverage"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ykan/robot-vue-img.git"
+  },
+  "keywords": [
+    "lazyload",
+    "img"
+  ],
+  "author": "ykan",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ykan/robot-vue-img/issues"
+  },
+  "homepage": "https://github.com/ykan/robot-vue-img#readme",
+  "devDependencies": {
+    "@babel/core": "^7.14.6",
+    "@babel/plugin-transform-runtime": "^7.14.5",
+    "@babel/preset-env": "^7.14.7",
+    "@babel/preset-typescript": "^7.14.5",
+    "@muya-ui/baozheng-tsdoc": "^1.0.2",
+    "@rollup/plugin-babel": "^5.3.0",
+    "@rollup/plugin-commonjs": "^19.0.1",
+    "@rollup/plugin-typescript": "^8.2.3",
+    "@types/fs-extra": "^9.0.12",
+    "@types/jest": "^26.0.23",
+    "@typescript-eslint/eslint-plugin": "^4.28.0",
+    "@typescript-eslint/parser": "^4.28.0",
+    "@vitejs/plugin-vue": "^1.2.5",
+    "@vitejs/plugin-vue-jsx": "^1.1.6",
+    "@vue/compiler-sfc": "^3.1.5",
+    "babel-jest": "^27.0.6",
+    "chokidar": "^3.5.2",
+    "codesandbox": "^2.2.3",
+    "commitizen": "^4.2.4",
+    "eslint": "^7.29.0",
+    "eslint-config-alloy": "^4.1.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-jest": "^24.3.6",
+    "fs-extra": "^10.0.0",
+    "husky": "^7.0.1",
+    "jest": "^27.0.6",
+    "lint-staged": "^11.1.1",
+    "markdown-it": "^12.1.0",
+    "node-fetch": "^2.6.1",
+    "prettier": "2.3.2",
+    "prismjs": "^1.24.1",
+    "pug": "^3.0.2",
+    "rimraf": "^3.0.2",
+    "rollup": "^2.53.2",
+    "typescript": "^4.3.4",
+    "vite": "^2.4.3"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./scripts/cz.js"
+    }
+  },
+  "dependencies": {
+    "normalize.css": "^8.0.1",
+    "vue": "^3.1.5"
+  }
+}

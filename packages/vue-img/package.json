@@ -1,0 +1,33 @@
+{
+  "name": "@robot-img/react-img",
+  "version": "1.0.0-beta.0",
+  "description": "robot-img",
+  "main": "dist/react-img.cjs.js",
+  "module": "dist/react-img.esm.js",
+  "types": "dist/react-img.d.ts",
+  "files": [
+    "dist"
+  ],
+  "sideEffects": false,
+  "dependencies": {
+    "@robot-img/utils": "1.0.0-beta.0",
+    "@babel/runtime": "^7.14.6"
+  },
+  "peerDependencies": {
+    "vue": "^3.1.5"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ykan/robot-vue-img.git"
+  },
+  "keywords": [
+    "lazyload",
+    "img"
+  ],
+  "author": "ykan",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ykan/robot-vue-img/issues"
+  },
+  "homepage": "https://github.com/ykan/robot-vue-img#readme"
+}

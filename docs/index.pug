@@ -1,0 +1,24 @@
+extends layout.pug
+
+block main
+  +nav
+  if introHTML
+    .intro-container.container.md-body!= introHTML
+
+  each demo in demos
+    .container.md-body!= demo.mdHTML
+    .container.example-container
+      .example(id=demo.name)
+      .codesandbox
+        a(href=demo.codesandboxUrl target='_blank')
+          img(src='https://codesandbox.io/static/media/logo.450f79e2.svg')
+          span Codesandbox
+      .code
+        pre.language-tsx
+          code.language-tsx!= demo.code
+
+block scripts
+  each demo in demos
+    script(type='module' src=`./examples/${demo.name}/index.tsx`)
+
+  script(type='module' src='./index.ts')
