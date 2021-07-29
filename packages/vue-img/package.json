@@ -1,10 +1,10 @@
 {
-  "name": "@robot-img/react-img",
+  "name": "@robot-img/vue-img",
   "version": "1.0.0-alpha.0",
   "description": "robot-img",
-  "main": "dist/react-img.cjs.js",
-  "module": "dist/react-img.esm.js",
-  "types": "dist/react-img.d.ts",
+  "main": "dist/vue-img.cjs.js",
+  "module": "dist/vue-img.esm.js",
+  "types": "dist/vue-img.d.ts",
   "files": [
     "dist"
   ],
