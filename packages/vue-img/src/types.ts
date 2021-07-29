@@ -1,7 +1,8 @@
-import type Vue from 'vue'
 import type { ImgSrcTplPropFn } from '@robot-img/utils'
 
-export interface ImgPureProps {
+export interface ImgProps {
+  /** 类名 */
+  class?: string
   /** 图片地址 */
   src?: string
 
@@ -88,15 +89,6 @@ export interface ImgPureProps {
    */
   onLoaded?: (img: HTMLImageElement) => void
 }
-
-export type ImgDOMProps<T extends Vue.HTMLAttributes = Vue.HTMLAttributes> = Omit<
-  T,
-  'crossOrigin' | 'onError' | 'onLoaded'
->
-
-/** 图片组件的 Props */
-export type ImgProps<T extends Vue.HTMLAttributes = Vue.HTMLAttributes> = ImgPureProps &
-  ImgDOMProps<T>
 
 /** 图片容器组件的 Props */
 // export type ImgContainerProps = Omit<ImgPoolOptions, 'container'> &

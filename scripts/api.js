@@ -28,7 +28,7 @@ async function main() {
   const workspace = process.cwd()
   const apiPug = path.join(workspace, './docs/api.pug')
   const apiTpl = pug.compileFile(apiPug)
-  const result = parseFiles(['./packages/react-img/src/types.ts'], {
+  const result = parseFiles(['./packages/vue-img/src/types.ts'], {
     tsconfigPath: './tsconfig.json',
   })
   const interfaces = result.props.map((interface) => ({

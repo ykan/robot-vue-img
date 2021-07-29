@@ -1,3 +1,5 @@
 export * from './types'
 export * from '@robot-img/utils'
 export { useImg } from './useImg'
+export { imgPool } from './imgPool'
+export * from './Img'

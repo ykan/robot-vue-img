@@ -1,0 +1,37 @@
+extends layout.pug
+
+block main
+  +nav(false)
+
+  .container
+    h2 接口列表
+    each interfaceItem in interfaces
+      if interfaceItem.properties.length
+        .interface-item
+          h3.interface-title= interfaceItem.name
+          .md-body!= interfaceItem.comment
+
+          table.props-table
+            thead
+              tr
+                th Name
+                th Type
+                th Optional
+                th Description
+            tbody
+              each prop in interfaceItem.properties
+                tr
+                  td.prop-name= prop.name
+                  if prop.typeKind === 'union'
+                    td.prop-type= prop.types.join(' | ')
+                  else
+                    td.prop-type= prop.types.join('')
+                  td.prop-optional= prop.optional
+                  td.md-body.prop-comment!= prop.comment
+
+block scripts
+  if !cssUrl
+    script(type='module' src='./index.ts')
+
+
+
