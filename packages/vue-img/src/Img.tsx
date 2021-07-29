@@ -1,5 +1,6 @@
 import { CSSProperties, defineComponent, PropType } from 'vue'
 
+import { ImgContainer } from './ImgContainer'
 import { useImg } from './useImg'
 
 import type { ImgSrcTplPropFn } from '@robot-img/utils'
@@ -23,19 +24,43 @@ const props = {
   onError: Function as PropType<(e: string | Event) => void>,
   onLoaded: Function as PropType<(img: HTMLImageElement) => void>,
 }
-export const ImgDiv = defineComponent({
+const ImgDiv = defineComponent({
   props: {
     ...props,
     style: Object as PropType<CSSProperties>,
   },
-  setup(props, { attrs }) {
+  setup(props, { attrs, slots }) {
     const { state, imgRef, domProps } = useImg<HTMLDivElement>(props)
     return () => {
       const style = {
         ...props.style,
         backgroundImage: `url(${state.src})`,
       }
-      return <div {...attrs} {...domProps} style={style} ref={imgRef} />
+      return (
+        <div {...attrs} {...domProps} style={style} ref={imgRef}>
+          {slots.default}
+        </div>
+      )
+    }
+  },
+})
+const ImgSpan = defineComponent({
+  props: {
+    ...props,
+    style: Object as PropType<CSSProperties>,
+  },
+  setup(props, { attrs, slots }) {
+    const { state, imgRef, domProps } = useImg<HTMLSpanElement>(props)
+    return () => {
+      const style = {
+        ...props.style,
+        backgroundImage: `url(${state.src})`,
+      }
+      return (
+        <span {...attrs} {...domProps} style={style} ref={imgRef}>
+          {slots.default}
+        </span>
+      )
     }
   },
 })
@@ -47,4 +72,8 @@ const Img = defineComponent({
   },
 })
 
-export { Img }
+Img.Div = ImgDiv
+Img.Span = ImgSpan
+Img.Container = ImgContainer
+
+export { Img, ImgDiv, ImgSpan, ImgContainer }
