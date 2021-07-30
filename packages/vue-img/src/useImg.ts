@@ -46,6 +46,7 @@ export function useImg<T extends HTMLElement = HTMLElement>(props: ImgProps) {
     state.rect = rect
   }
   let currentRunningPromise: Promise<HTMLImageElement>
+  const getDefaultSrc = () => props.defaultSrc || poolRef.value.globalVars.defaultSrc || ''
   const loadImgAsync = (rect: DOMRect) => {
     const imgSrc = props.src || ''
     const imgSrcTpl = poolRef.value.srcTpl(props.srcTpl)
@@ -56,7 +57,7 @@ export function useImg<T extends HTMLElement = HTMLElement>(props: ImgProps) {
     state.rect = rect
     state.status = 'loading'
     if (innerLoadingType === 'src') {
-      state.src = props.defaultSrc || poolRef.value.globalVars.defaultSrc || ''
+      state.src = getDefaultSrc()
     } else {
       state.src = ''
     }
@@ -207,5 +208,7 @@ export function useImg<T extends HTMLElement = HTMLElement>(props: ImgProps) {
     imgRef,
     domProps,
     state,
+    imgPool: poolRef,
+    getDefaultSrc,
   }
 }

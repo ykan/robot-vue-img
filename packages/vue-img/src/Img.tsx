@@ -10,6 +10,7 @@ const props = {
   errorSrc: String,
   srcTpl: Function as PropType<ImgSrcTplPropFn>,
   class: String,
+  style: Object as PropType<CSSProperties>,
   statusClassNamePrefix: String,
   lazy: [String, Boolean] as PropType<false | 'scroll' | 'resize'>,
   shouldUpdate: Function as PropType<(newRect: DOMRect, oldRect: DOMRect) => boolean>,
@@ -25,10 +26,7 @@ const props = {
   onLoaded: Function as PropType<(img: HTMLImageElement) => void>,
 }
 const ImgDiv = defineComponent({
-  props: {
-    ...props,
-    style: Object as PropType<CSSProperties>,
-  },
+  props,
   setup(props, { attrs, slots }) {
     const { state, imgRef, domProps } = useImg<HTMLDivElement>(props)
     return () => {
@@ -45,10 +43,7 @@ const ImgDiv = defineComponent({
   },
 })
 const ImgSpan = defineComponent({
-  props: {
-    ...props,
-    style: Object as PropType<CSSProperties>,
-  },
+  props,
   setup(props, { attrs, slots }) {
     const { state, imgRef, domProps } = useImg<HTMLSpanElement>(props)
     return () => {
@@ -67,8 +62,16 @@ const ImgSpan = defineComponent({
 const Img = defineComponent({
   props,
   setup(props, { attrs }) {
-    const { state, imgRef, domProps } = useImg<HTMLImageElement>(props)
-    return () => <img {...attrs} {...domProps} src={state.src} ref={imgRef} />
+    const { state, imgRef, domProps, getDefaultSrc } = useImg<HTMLImageElement>(props)
+    return () => {
+      const src = state.src ? state.src : getDefaultSrc()
+      const allOtherProps = {
+        ...attrs,
+        ...domProps,
+        style: props.style,
+      }
+      return <img {...allOtherProps} src={src} ref={imgRef} />
+    }
   },
 })
 

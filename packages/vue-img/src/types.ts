@@ -1,8 +1,11 @@
-import type { ImgSrcTplPropFn } from '@robot-img/utils'
+import type { ImgSrcTplPropFn, ImgPool, ImgPoolOptions } from '@robot-img/utils'
+import type { CSSProperties, DefineComponent, Ref } from 'vue'
 
 export interface ImgProps {
   /** 类名 */
   class?: string
+  /** 样式 */
+  style?: CSSProperties
   /** 图片地址 */
   src?: string
 
@@ -90,10 +93,6 @@ export interface ImgProps {
   onLoaded?: (img: HTMLImageElement) => void
 }
 
-/** 图片容器组件的 Props */
-// export type ImgContainerProps = Omit<ImgPoolOptions, 'container'> &
-//   React.HTMLAttributes<HTMLDivElement>
-
 export interface ImgState {
   /** 真实使用的 src */
   src: string
@@ -110,24 +109,28 @@ export interface ImgState {
 /**
  * useImg 返回值
  */
-// export interface ImgHookResult<T extends HTMLElement = HTMLElement> {
-//   /** 组件状态 */
-//   state: ImgState
-//   /** 处理后的 className */
-//   className: string
-//   /** 属性透传 */
-//   crossOrigin?: ImgProps['crossOrigin']
-//   /** 图片默认的 src ，会从 imgPool 和 defaultSrc 属性中取值 */
-//   defaultSrc: string
-//   /** 图片默认出错时的 src ，会从 imgPool 和 errorSrc 属性中取值 */
-//   errorSrc: string
-//   /** 当前使用的 imgPool */
-//   imgPool: ImgPool
-//   /** 获取节点 DOM ref */
-//   handleRef: ((refValue: T) => void) | null
-//   /** 处理后的 DOM 节点属性 */
-//   domProps: ImgDOMProps<T>
-// }
+export interface ImgHookResult<T extends HTMLElement = HTMLElement> {
+  /** 获取节点 DOM ref */
+  imgRef: Ref<T>
+  /** 组件状态 */
+  state: ImgState
+  /** 当前使用的 imgPool */
+  imgPool: Ref<ImgPool>
+  /** 处理后的 DOM 节点属性 */
+  domProps: Pick<ImgProps, 'class' | 'crossOrigin'>
+  /** 获取默认图片 */
+  getDefaultSrc: () => string
+}
 
 // 手写的 ts 类型，用于 ts 类型打包优化
+export declare const ImgDiv: DefineComponent<ImgProps>
+export declare const ImgSpan: DefineComponent<ImgProps>
+export declare const ImgContainer: DefineComponent<Omit<ImgPoolOptions, 'container'>>
+export declare const Img: DefineComponent<ImgProps> & {
+  Div: typeof ImgDiv
+  Span: typeof ImgSpan
+  Container: typeof ImgContainer
+}
+export declare const useImg: <T extends HTMLElement>(props: ImgProps) => ImgHookResult<T>
+export declare const imgPool: ImgPool
 export * from '@robot-img/utils'
