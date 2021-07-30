@@ -20,6 +20,7 @@ block main
         pre.language-tsx
           code.language-tsx!= demo.code
 
+
 block scripts
   each demo in demos
     script(type='module' src=`./examples/${demo.name}/index.tsx`)

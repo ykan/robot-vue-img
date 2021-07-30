@@ -40,27 +40,50 @@ async function main() {
     path.join(codesandboxTplDir, 'tsconfig.tpl.json'),
     'utf8'
   )
+  const codesandboxViteConfig = await fs.readFile(
+    path.join(codesandboxTplDir, 'vite.config.tpl.ts'),
+    'utf8'
+  )
+  const codesandboxConfig = await fs.readFile(
+    path.join(codesandboxTplDir, 'sandbox.config.json'),
+    'utf8'
+  )
 
-  function getCodesandboxParameters(indexContent) {
-    return getParameters({
-      files: {
-        'index.tsx': {
-          content: indexContent,
-          isBinary: false,
-        },
-        'index.html': {
-          content: codesandboxHTML,
-          isBinary: false,
-        },
-        'package.json': {
-          isBinary: false,
-          content: codesandboxPkgJson,
-        },
-        'tsconfig.json': {
-          isBinary: false,
-          content: codesandboxTsconfigJson,
-        },
+  function getCodesandboxParameters(indexTsx, indexCss) {
+    const files = {
+      'index.tsx': {
+        content: indexTsx,
+        isBinary: false,
       },
+      'index.html': {
+        content: codesandboxHTML,
+        isBinary: false,
+      },
+      'package.json': {
+        isBinary: false,
+        content: codesandboxPkgJson,
+      },
+      'tsconfig.json': {
+        isBinary: false,
+        content: codesandboxTsconfigJson,
+      },
+      'vite.config.ts': {
+        isBinary: false,
+        content: codesandboxViteConfig,
+      },
+      'sandbox.config.json': {
+        isBinary: false,
+        content: codesandboxConfig,
+      },
+    }
+    if (indexCss) {
+      files['index.css'] = {
+        content: indexCss,
+        isBinary: false,
+      }
+    }
+    return getParameters({
+      files,
     })
   }
 
@@ -92,9 +115,17 @@ async function main() {
           demoItem.mdHTML = md.render(demoMD)
         }
         const code = await fs.readFile(indexFile, 'utf8')
+        const cssFilePath = path.join(exampleDir, 'index.css')
+        let indexCSS = ''
+        if (fs.existsSync(cssFilePath)) {
+          indexCSS = await fs.readFile(cssFilePath, 'utf8')
+        }
         // Returns a highlighted HTML string
         demoItem.code = Prism.highlight(code, Prism.languages.tsx, 'tsx')
-        demoItem.codesandboxParameters = getCodesandboxParameters(code.replace(example, 'root'))
+        demoItem.codesandboxParameters = getCodesandboxParameters(
+          code.replace(example, 'root'),
+          indexCSS
+        )
         demos.push(demoItem)
       }
     }
