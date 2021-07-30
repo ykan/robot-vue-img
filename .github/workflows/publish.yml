@@ -17,17 +17,13 @@ jobs:
       - uses: bahmutov/npm-install@v1
       - uses: actions/setup-node@v2
         with:
-          node-version: '12.x'
+          node-version: '16.x'
           registry-url: 'https://registry.npmjs.org'
           # Defaults to the user or organization that owns the workflow file
           scope: '@robot-img'
       - name: Run build
         run: npm run build
-      - name: publish @robot-img/utils
-        run: cd ./packages/utils && npm publish --access public
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-      - name: publish @robot-img/react-img
-        run: cd ./packages/react-img && npm publish --access public
+      - name: publish @robot-img/vue-img
+        run: cd ./packages/vue-img && npm publish --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
