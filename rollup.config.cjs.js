@@ -13,6 +13,7 @@ export default [
     },
     plugins: [
       typescript({
+        exclude: ['docs/**/*.ts?(x)'],
         tslib: './node_modules/typescript/lib',
       }),
       babel({ babelHelpers: 'runtime', extensions: ['.ts', '.tsx'] }),

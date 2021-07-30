@@ -1,6 +1,6 @@
 module.exports = {
   presets: ['@babel/preset-env', '@babel/preset-typescript'],
-  plugins: ['@babel/plugin-transform-typescript', '@vue/babel-plugin-jsx'],
+  plugins: ['@babel/plugin-transform-typescript'],
   env: {
     cjs: {
       plugins: ['@babel/plugin-transform-runtime'],

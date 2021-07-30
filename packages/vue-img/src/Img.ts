@@ -1,4 +1,4 @@
-import { CSSProperties, defineComponent, PropType } from 'vue'
+import { CSSProperties, defineComponent, h, PropType } from 'vue'
 
 import { ImgContainer } from './ImgContainer'
 import { useImg } from './useImg'
@@ -12,7 +12,7 @@ const props = {
   class: String,
   style: Object as PropType<CSSProperties>,
   statusClassNamePrefix: String,
-  lazy: [String, Boolean] as PropType<false | 'scroll' | 'resize'>,
+  lazy: String as PropType<'off' | 'scroll' | 'resize'>,
   shouldUpdate: Function as PropType<(newRect: DOMRect, oldRect: DOMRect) => boolean>,
   loadingType: String as PropType<'css' | 'src' | 'none'>,
   prepareImg: Function as PropType<
@@ -30,14 +30,23 @@ const ImgDiv = defineComponent({
   setup(props, { attrs, slots }) {
     const { state, imgRef, domProps } = useImg<HTMLDivElement>(props)
     return () => {
+      let backgroundImage
+      if (state.src) {
+        backgroundImage = `url(${state.src})`
+      }
       const style = {
         ...props.style,
-        backgroundImage: `url(${state.src})`,
+        backgroundImage,
       }
-      return (
-        <div {...attrs} {...domProps} style={style} ref={imgRef}>
-          {slots.default}
-        </div>
+      return h(
+        'div',
+        {
+          ...attrs,
+          ...domProps,
+          style,
+          ref: imgRef,
+        },
+        slots.default?.()
       )
     }
   },
@@ -47,14 +56,23 @@ const ImgSpan = defineComponent({
   setup(props, { attrs, slots }) {
     const { state, imgRef, domProps } = useImg<HTMLSpanElement>(props)
     return () => {
+      let backgroundImage
+      if (state.src) {
+        backgroundImage = `url(${state.src})`
+      }
       const style = {
         ...props.style,
-        backgroundImage: `url(${state.src})`,
+        backgroundImage,
       }
-      return (
-        <span {...attrs} {...domProps} style={style} ref={imgRef}>
-          {slots.default}
-        </span>
+      return h(
+        'span',
+        {
+          ...attrs,
+          ...domProps,
+          style,
+          ref: imgRef,
+        },
+        slots.default?.()
       )
     }
   },
@@ -65,12 +83,13 @@ const Img = defineComponent({
     const { state, imgRef, domProps, getDefaultSrc } = useImg<HTMLImageElement>(props)
     return () => {
       const src = state.src ? state.src : getDefaultSrc()
-      const allOtherProps = {
+      return h('img', {
         ...attrs,
         ...domProps,
         style: props.style,
-      }
-      return <img {...allOtherProps} src={src} ref={imgRef} />
+        src,
+        ref: imgRef,
+      })
     }
   },
 })

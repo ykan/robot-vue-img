@@ -24,6 +24,8 @@ function defaultShouldUpdate(newRect: DOMRect, oldRect: DOMRect) {
 }
 
 export function useImg<T extends HTMLElement = HTMLElement>(props: ImgProps) {
+  // 注意 composition api 和 hooks 是有区别的，这里的逻辑只会执行一遍
+  // 所以 props 别解构用，当 ref 用就好了
   const imgRef = ref<T>()
   // const handleRef = useForkRef(ref, imgRef)
   // 要保障整个生命周期只有一个引用
@@ -133,7 +135,7 @@ export function useImg<T extends HTMLElement = HTMLElement>(props: ImgProps) {
       state.rect = undefined
     }
     const rect = imgRef.value.getBoundingClientRect()
-    if (!props.lazy) {
+    if (props.lazy === 'off') {
       loadImg(rect)
     }
 
@@ -171,11 +173,25 @@ export function useImg<T extends HTMLElement = HTMLElement>(props: ImgProps) {
     poolRef.value.imgs.add(imgItemRef.value)
     updateWhenSrcChange()
 
-    // 这些值变了，会触发组件更新
+    // 看了 vue-next/packages/shared/src/index.ts hasChanged 判断用的是 Object.is
+    // 这些值变了，会触发 src 更新
     watch(() => props.src, updateWhenSrcChange)
     watch(() => props.srcTpl, updateWhenSrcChange)
-    watch(poolRef, updateWhenSrcChange)
+    watch(() => poolRef.value.srcTpl, updateWhenSrcChange)
     watch(imgRef, updateWhenSrcChange)
+    // 下面一些值变了，要更新 class
+    watch(
+      () =>
+        [
+          props.class,
+          state.status,
+          poolRef.value.globalVars.className,
+          poolRef.value.globalVars.statusClassNamePrefix,
+        ].join(''),
+      () => {
+        domProps.class = getDomClass()
+      }
+    )
   })
   onBeforeUpdate(() => {
     const currentPool = inject<ImgPool>('imgPool', defaultImgPool)
@@ -195,14 +211,6 @@ export function useImg<T extends HTMLElement = HTMLElement>(props: ImgProps) {
   onUnmounted(() => {
     poolRef.value.imgs.delete(imgItemRef.value)
   })
-
-  watch(
-    () =>
-      `${props.class}${state.status}${poolRef.value.globalVars.className}${poolRef.value.globalVars.statusClassNamePrefix}`,
-    () => {
-      domProps.class = getDomClass()
-    }
-  )
 
   return {
     imgRef,
