@@ -1,6 +1,6 @@
 {
   "name": "@robot-img/vue-img",
-  "version": "1.0.0-dev.0",
+  "version": "1.0.0-alpha.0",
   "description": "robot-img",
   "main": "dist/vue-img.cjs.js",
   "module": "dist/vue-img.esm.js",
