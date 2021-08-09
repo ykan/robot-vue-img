@@ -179,6 +179,7 @@ export function useImg<T extends HTMLElement = HTMLElement>(props: ImgProps) {
       () =>
         [
           props.class,
+          props.statusClassNamePrefix,
           state.status,
           poolRef.value.globalVars.className,
           poolRef.value.globalVars.statusClassNamePrefix,
