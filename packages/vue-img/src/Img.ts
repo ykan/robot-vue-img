@@ -4,7 +4,8 @@ import { ImgContainer } from './ImgContainer'
 import { useImg } from './useImg'
 
 import type { ImgSrcTplPropFn } from '@robot-img/utils'
-const props = {
+
+export const imgProps = {
   src: String,
   defaultSrc: String,
   errorSrc: String,
@@ -26,9 +27,9 @@ const props = {
   onLoaded: Function as PropType<(img: HTMLImageElement) => void>,
 }
 const ImgDiv = defineComponent({
-  props,
+  props: imgProps,
   setup(props, { attrs, slots }) {
-    const { state, imgRef, domProps } = useImg<HTMLDivElement>(props)
+    const { state, domRef, domProps } = useImg<HTMLDivElement>(props)
     return () => {
       let backgroundImage
       if (state.src) {
@@ -44,7 +45,7 @@ const ImgDiv = defineComponent({
           ...attrs,
           ...domProps,
           style,
-          ref: imgRef,
+          ref: domRef,
         },
         slots.default?.()
       )
@@ -52,9 +53,9 @@ const ImgDiv = defineComponent({
   },
 })
 const ImgSpan = defineComponent({
-  props,
+  props: imgProps,
   setup(props, { attrs, slots }) {
-    const { state, imgRef, domProps } = useImg<HTMLSpanElement>(props)
+    const { state, domRef, domProps } = useImg<HTMLSpanElement>(props)
     return () => {
       let backgroundImage
       if (state.src) {
@@ -70,7 +71,7 @@ const ImgSpan = defineComponent({
           ...attrs,
           ...domProps,
           style,
-          ref: imgRef,
+          ref: domRef,
         },
         slots.default?.()
       )
@@ -78,9 +79,9 @@ const ImgSpan = defineComponent({
   },
 })
 const Img = defineComponent({
-  props,
+  props: imgProps,
   setup(props, { attrs }) {
-    const { state, imgRef, domProps, getDefaultSrc } = useImg<HTMLImageElement>(props)
+    const { state, domRef, domProps, getDefaultSrc } = useImg<HTMLImageElement>(props)
     return () => {
       const src = state.src ? state.src : getDefaultSrc()
       return h('img', {
@@ -88,7 +89,7 @@ const Img = defineComponent({
         ...domProps,
         style: props.style,
         src,
-        ref: imgRef,
+        ref: domRef,
       })
     }
   },

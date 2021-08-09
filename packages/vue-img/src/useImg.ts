@@ -15,18 +15,10 @@ import { imgPool as defaultImgPool } from './imgPool'
 
 import type { ImgProps, ImgState } from './types'
 
-function defaultShouldUpdate(newRect: DOMRect, oldRect: DOMRect) {
-  const newArea = newRect.width * newRect.height
-  const oldArea = oldRect.width * oldRect.height
-
-  // 当面积变大 20% 时，才更新图片
-  return newArea > oldArea * 1.2
-}
-
 export function useImg<T extends HTMLElement = HTMLElement>(props: ImgProps) {
   // 注意 composition api 和 hooks 是有区别的，这里的逻辑只会执行一遍
   // 所以 props 别解构用，当 ref 用就好了
-  const imgRef = ref<T>()
+  const imgRef = ref<T | undefined>()
   // const handleRef = useForkRef(ref, imgRef)
   // 要保障整个生命周期只有一个引用
   const imgItemRef = ref<ImgItem>({
@@ -46,6 +38,7 @@ export function useImg<T extends HTMLElement = HTMLElement>(props: ImgProps) {
     state.src = imgSrcTpl({ rect, src: imgSrc })
     state.originSrc = imgSrc
     state.rect = rect
+    state.status = 'loaded'
   }
   let currentRunningPromise: Promise<HTMLImageElement>
   const getDefaultSrc = () => props.defaultSrc || poolRef.value.globalVars.defaultSrc || ''
@@ -117,8 +110,8 @@ export function useImg<T extends HTMLElement = HTMLElement>(props: ImgProps) {
       if (!poolRef.value.overlap(rect)) {
         return
       }
-      const innerShouldUpdate = props.shouldUpdate || defaultShouldUpdate
-      if (innerShouldUpdate(rect, state.rect)) {
+      const innerShouldUpdate = props.shouldUpdate || poolRef.value.globalVars.shouldUpdate
+      if (innerShouldUpdate?.(rect, state.rect)) {
         loadImg(rect)
       }
     }
@@ -133,10 +126,12 @@ export function useImg<T extends HTMLElement = HTMLElement>(props: ImgProps) {
       state.originSrc = ''
       state.src = ''
       state.rect = undefined
+      return
     }
     const rect = imgRef.value.getBoundingClientRect()
     if (props.lazy === 'off') {
       loadImg(rect)
+      return
     }
 
     // 执行第一次检测，如果不在容器区域范围内，等待下一次检测事件发生
@@ -213,10 +208,13 @@ export function useImg<T extends HTMLElement = HTMLElement>(props: ImgProps) {
   })
 
   return {
-    imgRef,
+    domRef: imgRef,
     domProps,
     state,
     imgPool: poolRef,
     getDefaultSrc,
+
+    // for test,
+    loadImg,
   }
 }

@@ -114,7 +114,7 @@ export interface ImgState {
  */
 export interface ImgHookResult<T extends HTMLElement = HTMLElement> {
   /** 获取节点 DOM ref */
-  imgRef: Ref<T>
+  domRef: Ref<T | undefined>
   /** 组件状态 */
   state: ImgState
   /** 当前使用的 imgPool */
