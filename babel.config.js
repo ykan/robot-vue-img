@@ -8,5 +8,8 @@ module.exports = {
     // cjs: {
     //   plugins: ['@babel/plugin-transform-runtime'],
     // },
+    test: {
+      plugins: ['@babel/plugin-transform-runtime'],
+    },
   },
 }
