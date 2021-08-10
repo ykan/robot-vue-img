@@ -1,9 +1,12 @@
 module.exports = {
   presets: ['@babel/preset-env', '@babel/preset-typescript'],
-  plugins: ['@babel/plugin-transform-typescript'],
+  plugins: [
+    ['@babel/proposal-object-rest-spread', { loose: true }],
+    // '@babel/plugin-transform-runtime',
+  ],
   env: {
-    cjs: {
-      plugins: ['@babel/plugin-transform-runtime'],
-    },
+    // cjs: {
+    //   plugins: ['@babel/plugin-transform-runtime'],
+    // },
   },
 }

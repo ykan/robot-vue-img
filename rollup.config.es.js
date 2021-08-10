@@ -1,21 +1,16 @@
 import { babel } from '@rollup/plugin-babel'
-import typescript from '@rollup/plugin-typescript'
+import { nodeResolve } from '@rollup/plugin-node-resolve'
+const extensions = ['.ts', '.tsx']
 
 export default [
   {
     input: './packages/vue-img/src/index.ts',
-    external: ['@robot-img/utils'],
+    external: ['@robot-img/utils', 'vue'],
     output: {
       file: './packages/vue-img/dist/vue-img.esm.js',
       format: 'es',
       sourcemap: true,
     },
-    plugins: [
-      typescript({
-        exclude: ['docs/**/*.ts?(x)'],
-        tslib: './node_modules/typescript/lib',
-      }),
-      babel({ babelHelpers: 'inline', extensions: ['.ts', '.tsx'] }),
-    ],
+    plugins: [nodeResolve({ extensions }), babel({ babelHelpers: 'inline', extensions })],
   },
 ]

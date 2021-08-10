@@ -1,6 +1,6 @@
 {
   "name": "@robot-img/vue-img",
-  "version": "1.0.0-alpha.0",
+  "version": "1.0.0-alpha.1",
   "description": "robot-img",
   "main": "dist/vue-img.cjs.js",
   "module": "dist/vue-img.esm.js",
@@ -10,8 +10,7 @@
   ],
   "sideEffects": false,
   "dependencies": {
-    "@robot-img/utils": "1.0.0-beta.4",
-    "@babel/runtime": "^7.14.6"
+    "@robot-img/utils": "1.0.0-beta.5"
   },
   "peerDependencies": {
     "vue": "^3.1.5"
