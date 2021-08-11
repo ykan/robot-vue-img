@@ -26,25 +26,28 @@ export const imgProps = {
   onError: Function as PropType<(e: string | Event) => void>,
   onLoaded: Function as PropType<(img: HTMLImageElement) => void>,
 }
+
+function getStyle(src?: string, style?: CSSProperties) {
+  if (src) {
+    return {
+      ...style,
+      backgroundImage: `url(${src})`,
+    }
+  }
+  return style
+}
+
 const ImgDiv = defineComponent({
   props: imgProps,
   setup(props, { attrs, slots }) {
     const { state, domRef, domProps } = useImg<HTMLDivElement>(props)
     return () => {
-      let backgroundImage
-      if (state.src) {
-        backgroundImage = `url(${state.src})`
-      }
-      const style = {
-        ...props.style,
-        backgroundImage,
-      }
       return h(
         'div',
         {
           ...attrs,
           ...domProps,
-          style,
+          style: getStyle(state.src, props.style),
           ref: domRef,
         },
         slots.default?.()
@@ -57,20 +60,12 @@ const ImgSpan = defineComponent({
   setup(props, { attrs, slots }) {
     const { state, domRef, domProps } = useImg<HTMLSpanElement>(props)
     return () => {
-      let backgroundImage
-      if (state.src) {
-        backgroundImage = `url(${state.src})`
-      }
-      const style = {
-        ...props.style,
-        backgroundImage,
-      }
       return h(
         'span',
         {
           ...attrs,
           ...domProps,
-          style,
+          style: getStyle(state.src, props.style),
           ref: domRef,
         },
         slots.default?.()
