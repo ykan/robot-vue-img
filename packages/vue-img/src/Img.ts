@@ -41,8 +41,8 @@ const ImgDiv = defineComponent({
   props: imgProps,
   setup(props, { attrs, slots }) {
     const { state, domRef, domProps } = useImg<HTMLDivElement>(props)
-    return () => {
-      return h(
+    return () =>
+      h(
         'div',
         {
           ...attrs,
@@ -52,15 +52,14 @@ const ImgDiv = defineComponent({
         },
         slots.default?.()
       )
-    }
   },
 })
 const ImgSpan = defineComponent({
   props: imgProps,
   setup(props, { attrs, slots }) {
     const { state, domRef, domProps } = useImg<HTMLSpanElement>(props)
-    return () => {
-      return h(
+    return () =>
+      h(
         'span',
         {
           ...attrs,
@@ -70,23 +69,20 @@ const ImgSpan = defineComponent({
         },
         slots.default?.()
       )
-    }
   },
 })
 const Img = defineComponent({
   props: imgProps,
   setup(props, { attrs }) {
     const { state, domRef, domProps, getDefaultSrc } = useImg<HTMLImageElement>(props)
-    return () => {
-      const src = state.src ? state.src : getDefaultSrc()
-      return h('img', {
+    return () =>
+      h('img', {
         ...attrs,
         ...domProps,
         style: props.style,
-        src,
+        src: state.src ? state.src : getDefaultSrc(),
         ref: domRef,
       })
-    }
   },
 })
 
