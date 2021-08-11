@@ -22,38 +22,31 @@ const ImgContainer = defineComponent({
         })
       }
     }
-    onMounted(resetPoolContainer)
-    watch(
-      () => props.getContainerRect,
-      () => {
-        pool.reset({ getContainerRect: props.getContainerRect })
-      }
-    )
-    watch(
-      () => props.name,
-      () => {
-        pool.reset({ name: props.name })
-      }
-    )
-    watch(
-      () => props.tickTime,
-      () => {
-        pool.reset({ tickTime: props.tickTime })
-      }
-    )
-    watch(
-      () => props.globalVars,
-      () => {
-        pool.reset({ globalVars: props.globalVars })
-      }
-    )
-    watch(
-      () => props.createSrcTpl,
-      () => {
-        pool.reset({ createSrcTpl: props.createSrcTpl })
-      }
-    )
-    watch(containerRef, resetPoolContainer)
+    onMounted(() => {
+      resetPoolContainer()
+      watch(
+        () => props.getContainerRect,
+        () => pool.reset({ getContainerRect: props.getContainerRect })
+      )
+      watch(
+        () => props.name,
+        () => pool.reset({ name: props.name })
+      )
+      watch(
+        () => props.tickTime,
+        () => pool.reset({ tickTime: props.tickTime })
+      )
+      watch(
+        () => props.globalVars,
+        () => pool.reset({ globalVars: props.globalVars })
+      )
+      watch(
+        () => props.createSrcTpl,
+        () => pool.reset({ createSrcTpl: props.createSrcTpl })
+      )
+      watch(containerRef, resetPoolContainer)
+    })
+
     provide('imgPool', pool)
     return () => {
       return h(
